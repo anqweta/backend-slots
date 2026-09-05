@@ -1,6 +1,12 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { SlotMachine } from './app.service';
 import type { SymbolItem } from './constants';
+
+interface SlotData {
+  currentBet: number;
+  countSame: Record<number, number>;
+  SYMBOLS: SymbolItem[];
+}
 
 @Controller()
 export class AppController {
@@ -13,12 +19,12 @@ export class AppController {
     return this.appService.getHello();
   } */
 
-  @Get('moneywin')
-  calcMoneyWin(
-    currentBet: number,
-    countSame: Map<number, number>,
-    SYMBOLS: SymbolItem[],
-  ): { moneyWin; currentMult } {
+  @Post('moneywin')
+  calcMoneyWin(@Body() slotData: SlotData): number {
+    const currentBet = slotData.currentBet;
+    const countSame = slotData.countSame;
+    const SYMBOLS = slotData.SYMBOLS;
+
     return this.slotMachine.calcMoneyWin(currentBet, countSame, SYMBOLS);
   }
 }

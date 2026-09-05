@@ -12,31 +12,31 @@ export class AppService {
 export class SlotMachine {
   calcMoneyWin(
     currentBet: number,
-    countSame: Map<number, number>,
+    countSame: Record<number, number>,
     SYMBOLS: SymbolItem[],
-  ): { moneyWin; currentMult } {
-    let maxKey: number | null = null;
+  ): number {
+    let maxKey: number = -1;
     let maxValue: number = 0;
     let currentMult: number = 0;
 
-    for (const [icon, count] of countSame) {
+    for (const [icon, count] of Object.entries(countSame)) {
       if (count > maxValue) {
         maxValue = count;
-        maxKey = icon;
+        maxKey = Number(icon);
       }
     }
 
     console.log('НОМЕР ІКОНКИ ' + maxKey);
-    if (countSame.size === 1) {
-      currentMult = SYMBOLS[maxKey as number].firstMult;
+    if (Object.keys(countSame).length === 1) {
+      currentMult = SYMBOLS[maxKey].firstMult;
       console.log('Ви вийграли, ваш множник ПРИ 3 ІКОНКАХ: ' + currentMult);
     } else {
-      currentMult = SYMBOLS[maxKey as number].secondMult;
+      currentMult = SYMBOLS[maxKey].secondMult;
       console.log('Ви вийграли, ваша множник ПРИ 2 ІКОНАХ: ' + currentMult);
     }
 
     const moneyWin: number = currentBet * currentMult;
 
-    return { moneyWin, currentMult };
+    return moneyWin;
   }
 }
