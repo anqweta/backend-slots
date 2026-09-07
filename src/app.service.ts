@@ -36,7 +36,6 @@ export class SlotMachine {
     }
 
     const moneyWin: number = currentBet * currentMult;
-
     return moneyWin;
   }
 }
